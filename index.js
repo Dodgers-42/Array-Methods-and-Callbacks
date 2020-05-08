@@ -121,7 +121,7 @@ function getWinnersByYear(callback1, callback2,array1,callback3) {
     let allwinners = []
     console.log(years)
     for (let i=0; i < winners.length; i++){
-        console.log(`In ${year}, ${country} won the world cup!`)
+        console.log(`In ${years[i]}, ${winners[i]} won the world cup!`)
     }
     return allwinners;
 };
@@ -135,23 +135,50 @@ getWinnersByYear(getYears,getWinners,fifaData,getFinals);
 Hint: Investigate your data to find "team initials"!
 Hint: use `.reduce` */
 
-function getCountryWins(/* code here */) {
+function getCountryWins(data, initials) {
+    let wins = data.reduce((acc, finals1)) =>{
+        if(finals1.Stage === "Final"){
+            let winnerInitials;
+            if(finals1["Home Team Goals"] < finals1["Away Team Goals"]) {
+                winnerInitials = finals1["Home Team Name"].substr(0, 3).toUpperCase();
 
-    /* code here */
+            }else if(finals1["Home Team Goals"] < finals1["Away Team Goals"]) {
+                winnerInitials = finals1["Away Team Name"].substr(0, 3).toUpperCase();   
+            }else{
+                winnerInitials = finals1["win conditions"].substr(0, 3).toUpperCase(); 
+            }
+            if(winnerInitials === initials){
+                return acc + 1;
+            }
+        }
+        return acc;
+    },0);
+    return wins;
 
 };
 
-getCountryWins();
+console.log(getCountryWins(fifaData, "USA"));
 
 /* Task 8: Write a function called `getAverageGoals` that accepts a parameter `data` and returns the the average number of home team goals and away team goals scored per match (Hint: use .reduce and do this in 2 steps) */
 
-function getAverageGoals(/* code here */) {
-
-    /* code here */
+function getAverageGoals(data) {
+    let homeTeamGoalsAvg = data.reduce((goals, game, index)=>{
+        let gameCounter = index + 1;
+        return goals + game["Home Team Goals"] / gamesCounter;
+    },0);
+    let awayTeamGoalsAvg = data.reduce((goals, game, index)=>{
+        let gameCounter = index + 1;
+        return goals + game["Away Team Goals"] / gameCounter;
+    },0);
+    return {
+        homeTeamGoalsAvg,
+        awayTeamGoalsAvg,
+    }
+    
 
 };
 
-getAverageGoals();
+console.log(getAverageGoals(fifaData));
 
 
 /// STRETCH 🥅 //
