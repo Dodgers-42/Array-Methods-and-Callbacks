@@ -136,10 +136,10 @@ Hint: Investigate your data to find "team initials"!
 Hint: use `.reduce` */
 
 function getCountryWins(data, initials) {
-    let wins = data.reduce((acc, finals1)) =>{
+    let wins = data.reduce((acc, finals1) => {
         if(finals1.Stage === "Final"){
             let winnerInitials;
-            if(finals1["Home Team Goals"] < finals1["Away Team Goals"]) {
+            if(finals1["Home Team Goals"] > finals1["Away Team Goals"]) {
                 winnerInitials = finals1["Home Team Name"].substr(0, 3).toUpperCase();
 
             }else if(finals1["Home Team Goals"] < finals1["Away Team Goals"]) {
@@ -164,7 +164,7 @@ console.log(getCountryWins(fifaData, "USA"));
 function getAverageGoals(data) {
     let homeTeamGoalsAvg = data.reduce((goals, game, index)=>{
         let gameCounter = index + 1;
-        return goals + game["Home Team Goals"] / gamesCounter;
+        return goals + game["Home Team Goals"] / gameCounter;
     },0);
     let awayTeamGoalsAvg = data.reduce((goals, game, index)=>{
         let gameCounter = index + 1;
